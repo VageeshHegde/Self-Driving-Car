@@ -1,3 +1,34 @@
+ // Import the functions you need from the SDKs you need
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+ import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+ import {
+    getDatabase,
+    ref,
+    get,
+    set,
+    remove
+  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+ // TODO: Add SDKs for Firebase products that you want to use
+ // https://firebase.google.com/docs/web/setup#available-libraries
+
+ // Your web app's Firebase configuration
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ const firebaseConfig = {
+   apiKey: "AIzaSyA--LeYtQva6Jc--DQk7wdRDguZcH0xKQA",
+   authDomain: "self-driving-car-95229.firebaseapp.com",
+   projectId: "self-driving-car-95229",
+   databaseURL: "https://self-driving-car-95229-default-rtdb.firebaseio.com",
+   storageBucket: "self-driving-car-95229.firebasestorage.app",
+   messagingSenderId: "26373049361",
+   appId: "1:26373049361:web:f8a0023ef569e8992ff5b0",
+   measurementId: "G-M4Y72Y6JTE"
+ };
+
+ // Initialize Firebase
+ const app = initializeApp(firebaseConfig);
+ const analytics = getAnalytics(app);
+ const database = getDatabase(app);
+
 const carCanvas = document.getElementById('carCanvas');
 carCanvas.width = 200;
 const networkCanvas = document.getElementById('networkCanvas');
@@ -9,17 +40,31 @@ const networkCtx = networkCanvas.getContext("2d");
 const road = new Road(carCanvas.width/2, carCanvas.width*0.9)
 // const car = new Car(road.getLaneCenter(1), 100, 30, 50, "AI");
 
-const N = 1;
+const N = 100;
 const cars = generateCars(N);
 let bestCar = cars[0];
-if(localStorage.getItem("bestBrain")) {
-    for(let i=0; i<cars.length; i++) {
-        cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
-        if(i!=0) {
-            NeuralNetwork.mutate(cars[i].brain, 0.5);
+// if(localStorage.getItem("bestBrain")) {
+//     for(let i=0; i<cars.length; i++) {
+//         cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+//         if(i!=0) {
+//             NeuralNetwork.mutate(cars[i].brain, 0.5);
+//         }
+//     }
+// }
+
+// Load from Firebase
+get(ref(database, 'bestBrain')).then(snapshot => {
+    const brain = snapshot.val();
+    if (brain) {
+      for (let i = 0; i < cars.length; i++) {
+        cars[i].brain = brain;
+        if (i != 0) {
+          NeuralNetwork.mutate(cars[i].brain, 0.5);
         }
+      }
     }
-}
+});
+
 // car.draw(ctx);
 
 // const traffic = [
@@ -56,15 +101,25 @@ for (let i = 0; i < 60; i++) {
 
 animate();
 
+// function save() {
+//     localStorage.setItem("bestBrain",
+//         JSON.stringify(bestCar.brain)
+//     );
+// }
+
+// Save best brain to Firebase
 function save() {
-    localStorage.setItem("bestBrain",
-        JSON.stringify(bestCar.brain)
-    );
+    set(ref(database, 'bestBrain'), JSON.parse(JSON.stringify(bestCar.brain)));
+  }
+  
+// Remove saved brain
+function discard() {   
+    remove(ref(database, 'bestBrain'));
 }
 
-function discard() {
-    localStorage.removeItem("bestBrain");
-}
+// function discard() {
+//     localStorage.removeItem("bestBrain");
+// }
 
 function generateCars(N) {
     const cars = [];
@@ -121,4 +176,5 @@ function animate(time) {
     requestAnimationFrame(animate);
 }
 
-
+window.save = save;
+window.discard = discard;
