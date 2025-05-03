@@ -33,3 +33,19 @@ button:hover {
 #carCanvas {
     background-color: lightgray;
 }
+
+#introHeading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-family: sans-serif;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 2s ease;
+}
