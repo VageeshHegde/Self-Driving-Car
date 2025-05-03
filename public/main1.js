@@ -1,34 +1,3 @@
- // Import the functions you need from the SDKs you need
- import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
- import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
- import {
-    getDatabase,
-    ref,
-    get,
-    set,
-    remove
-  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
- // TODO: Add SDKs for Firebase products that you want to use
- // https://firebase.google.com/docs/web/setup#available-libraries
-
- // Your web app's Firebase configuration
- // For Firebase JS SDK v7.20.0 and later, measurementId is optional
- const firebaseConfig = {
-   apiKey: "AIzaSyA--LeYtQva6Jc--DQk7wdRDguZcH0xKQA",
-   authDomain: "self-driving-car-95229.firebaseapp.com",
-   projectId: "self-driving-car-95229",
-   databaseURL: "https://self-driving-car-95229-default-rtdb.firebaseio.com",
-   storageBucket: "self-driving-car-95229.firebasestorage.app",
-   messagingSenderId: "26373049361",
-   appId: "1:26373049361:web:f8a0023ef569e8992ff5b0",
-   measurementId: "G-M4Y72Y6JTE"
- };
-
- // Initialize Firebase
- const app = initializeApp(firebaseConfig);
- const analytics = getAnalytics(app);
- const database = getDatabase(app);
- 
 const carCanvas = document.getElementById('carCanvas');
 carCanvas.width = 200;
 const networkCanvas = document.getElementById('networkCanvas');
