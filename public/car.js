@@ -17,7 +17,7 @@ class Car {
         // Sound setup
         this.crashSound = new Audio("explosion-8-bit-8-314694.mp3");
         this.hasPlayedCrashSound = false;
-        this.startSound = new Audio("car-acceleration-inside-car-7087.mp3");
+        this.startSound = new Audio("car-acceleration-inside-car-70871.mp3");
         // this.hasPlayedStartSound = false;
 
         if(controlType != "DUMMY") {
