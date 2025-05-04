@@ -2,12 +2,31 @@ let controlMode = "AI"; // default
 let cars = [];
 let bestCar;
 
+function stopAllSounds() {
+    const allCars = [...cars || []]; // cars array from your simulation
+
+    allCars.forEach(car => {
+        if (car.startSound) {
+            car.startSound.pause();
+            car.startSound.currentTime = 0;
+            car.hasPlayedStartSound = false;
+        }
+        if (car.crashSound) {
+            car.crashSound.pause();
+            car.crashSound.currentTime = 0;
+            car.hasPlayedCrashSound = false;
+        }
+    });
+}
+
 document.getElementById("aiMode").addEventListener("click", () => {
+    stopAllSounds();       
     controlMode = "AI";
     startSimulation();
 });
 
 document.getElementById("gameMode").addEventListener("click", () => {
+    stopAllSounds();       
     controlMode = "KEYS";
     startSimulation();
 });
