@@ -114,7 +114,6 @@ class Car {
         return points;
     }
 
-
     #move() {
         const wasStationary = this.speed === 0;
 
